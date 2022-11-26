@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt"
-import {UserRepo} from "../Databse/DBRepos";
+import {UsersRepo} from "../Databse/DBRepos";
 
 export class AccountService{
     public async Register(login: string, password: string): Promise<boolean>{
@@ -10,7 +10,7 @@ export class AccountService{
 
             const pass = await bcrypt.hash(password, 10)
 
-            const user = UserRepo.create({
+            const user = UsersRepo.create({
                 login: login,
                 password: pass
             })
@@ -29,7 +29,7 @@ export class AccountService{
                 return false
             }
 
-            const user = await UserRepo.findOneOrFail({
+            const user = await UsersRepo.findOneOrFail({
                 where:{
                     login: login
                 }
@@ -45,9 +45,5 @@ export class AccountService{
         }catch{
             return false
         }
-    }
-
-    private CheckPassword(password: string): boolean{
-        return false
     }
 }

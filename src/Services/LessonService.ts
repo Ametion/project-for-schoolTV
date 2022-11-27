@@ -1,6 +1,5 @@
 import {TeacherService} from "./TeacherService";
 import {ClassesRepo, LessonHoursRepo, LessonsRepo, WeekdaysRepo} from "../Databse/DBRepos";
-import {Teacher} from "../Databse/Entity/Teacher";
 
 export class LessonService{
     private readonly teacherService: TeacherService;
@@ -47,21 +46,17 @@ export class LessonService{
                 return false
             }
 
-            if(teacher instanceof Teacher){
-                const lesson = LessonsRepo.create({
-                    lessonName: lessonName,
-                    lessonHours: lessonHour,
-                    day: day,
-                    class: className,
-                    teacher: teacher
-                })
+            const lesson = LessonsRepo.create({
+                lessonName: lessonName,
+                lessonHours: lessonHour,
+                day: day,
+                class: className,
+                teacher: teacher
+            })
 
-                await lesson.save()
+            await lesson.save()
 
-                return true
-            }
-
-            return false;
+            return true
         }catch{
             return false;
         }
@@ -69,16 +64,11 @@ export class LessonService{
 
     public async GetLessonByDay(dayId: number): Promise<any>{
         try{
-            const day = await WeekdaysRepo.findOneOrFail({
+            return await LessonsRepo.find({
                 where: {
-                    id: dayId
-                }
-            })
-
-            const lessons = await LessonsRepo.find({
-                //@ts-ignore
-                where: {
-                    day: day
+                    day: {
+                        id: dayId
+                    }
                 },
                 relations: {
                     day: true,
@@ -86,25 +76,42 @@ export class LessonService{
                     lessonHours: true,
                     teacher: true,
                 },
-                select:{
+                select: {
                     id: true,
                     lessonName: true,
-                    teacher:{
+                    teacher: {
                         firstName: true,
                         secondName: true
                     },
                     class: {
                         className: true
                     },
-                    day:{
+                    day: {
                         day: true
+                    },
+                    lessonHours:{
+                        lessonHour: true
                     }
+                }
+            });
+        }catch{
+            return null
+        }
+    }
+
+    public async DeleteLesson(lessonId: number): Promise<boolean>{
+        try{
+            const lesson = await LessonsRepo.findOneOrFail({
+                where: {
+                    id: lessonId
                 }
             })
 
-            return lessons;
+            await lesson.remove()
+
+            return true
         }catch{
-            return null
+            return false
         }
     }
 }

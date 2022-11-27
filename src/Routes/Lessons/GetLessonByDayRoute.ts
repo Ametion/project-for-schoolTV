@@ -16,7 +16,7 @@ router.get("/lesson/:day", async (req, res) => {
 
         return
     }catch{
-        res.status(400).send("cant login to account")
+        res.status(400).send("cant get lessons")
     }
 })
 

@@ -21,11 +21,11 @@ export class TeacherService{
         }
     }
 
-    public async RemoveTeacher(id: number): Promise<boolean>{
+    public async RemoveTeacher(teacherId: number): Promise<boolean>{
         try{
             const teacher = await TeachersRepo.findOneOrFail({
                 where: {
-                    id: id
+                    id: teacherId
                 }
             })
 
@@ -37,21 +37,15 @@ export class TeacherService{
         }
     }
 
-    public async GetTeacher(id: number): Promise<Teacher | string>{
+    public async GetTeacher(id: number): Promise<Teacher | never>{
         try{
-            const teacher = await TeachersRepo.findOneOrFail({
+            return await TeachersRepo.findOneOrFail({
                 where: {
                     id: id
                 }
             })
-
-            if(teacher){
-                return teacher
-            }
-
-            return "something wrong"
         }catch{
-            return "error while getting teacher"
+            throw new Error("some error")
         }
     }
 }

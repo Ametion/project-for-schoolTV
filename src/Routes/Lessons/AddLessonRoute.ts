@@ -16,7 +16,7 @@ router.post("/lesson", async (req, res) => {
 
         return
     }catch{
-        res.status(400).send("cant login to account")
+        res.status(400).send("cant add lesson")
     }
 })
 

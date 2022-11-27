@@ -6,6 +6,8 @@ import {addLessonRouter} from "./Routes/Lessons/AddLessonRoute";
 import {addTeacherRouter} from "./Routes/Teachers/AddTeacherRoute";
 import {getLessonsByDayRouter} from "./Routes/Lessons/GetLessonByDayRoute";
 import cors from 'cors';
+import {deleteLessonRouter} from "./Routes/Lessons/DeleteLessonRoute";
+import {removeTeacherRouter} from "./Routes/Teachers/RemoveTeacherRoute";
 require("dotenv").config()
 
 const corsConfig = {
@@ -27,6 +29,9 @@ app.listen(process.env.PORT, () => {
         app.use(addLessonRouter)
         app.use(addTeacherRouter)
         app.use(getLessonsByDayRouter)
+        app.use(deleteLessonRouter)
+        app.use(removeTeacherRouter)
+
     }).catch((err) => {
         console.log(`error\n`, err)
     })

@@ -15,7 +15,7 @@ router.post("/teacher", async (req, res) => {
         res.status(201).send(await new TeacherService().AddTeacher(firstName, secondName))
         return
     }catch{
-        res.status(400).send("cant login to account")
+        res.status(400).send("cant add teacher")
     }
 })
 
